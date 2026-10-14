@@ -36,7 +36,7 @@ export default function Overview() {
                 이별 이후의 시간을 받아들이는 과정까지 이어집니다.
               </p>
               <p>
-                Dear By Pet은 이 모든 과정에서 보호자가 혼자 고민하지 않기를
+                DearByPet은 이 모든 과정에서 보호자가 혼자 고민하지 않기를
                 바라며 시작되었습니다.
               </p>
             </div>

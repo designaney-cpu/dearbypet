@@ -30,7 +30,7 @@ export default function Footer() {
     />
   </a>
 
-  <a href="mailto:master@dearbypet.com" aria-label="이메일 보내기">
+  <a href="mailto:dearbypet@naver.com" aria-label="이메일 보내기">
     <img
       src="/images/sns_mail.svg"
       alt=""

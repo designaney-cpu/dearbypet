@@ -40,7 +40,7 @@ export default function Hero() {
           <p className="mt-[10px] text-[18px] leading-[27px]">
             DearByPet은 반려동물과 보호자의 이별을
             <br />
-            더 세심하게 돌볼 케어 서비스를 준비하고 있습니다.
+            더 세심하게 돌보기 위한 케어 서비스를 준비하고 있습니다.
           </p>
         </div>
 

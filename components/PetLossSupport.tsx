@@ -28,11 +28,6 @@ const steps = [
   },
 ];
 
-const guidance = [
-  "전문 분야와 활동 형태에 따라 DearByPet 서비스 내 전문가 및 파트너로 함께합니다.",
-  "비대면 상담을 중심으로 진행하며, 세부 방식은 파트너와 논의 후 결정합니다.",
-  "지원서 확인 후 자격과 경력을 검토하고, 간단한 인터뷰를 거쳐 활동 분야와 조건을 협의합니다.",
-];
 
 export default function PetLossSupport() {
   return (
@@ -126,22 +121,6 @@ export default function PetLossSupport() {
         </ol>
       </div>
 
-      {/* 함께하는 방식: 피그마 원문 */}
-      <div className="px-6">
-        <aside aria-labelledby="care-guidance-title" className="mx-auto max-w-[1356px] rounded-[4px] bg-white px-6 py-6 shadow-[inset_0_0_0_1px_#e5e9ee] lg:px-10">
-          <h3 id="care-guidance-title" className="font-gowun text-[20px] font-normal leading-[29px] tracking-[-0.1px] text-[#412826]">
-            함께하는 방식
-          </h3>
-          <ul className="font-pretendard mt-3 space-y-1 text-[15px] leading-[24px] tracking-[-0.5px]">
-            {guidance.map((text) => (
-              <li key={text} className="flex gap-1">
-                <span aria-hidden="true" className="shrink-0">+</span>
-                <span>{text}</span>
-              </li>
-            ))}
-          </ul>
-        </aside>
-      </div>
     </section>
   );
 }

@@ -23,7 +23,7 @@ export default function Advice() {
             data-reveal-delay="150"
             className="font-pretendard text-[16px] leading-[24px] tracking-[-0.5px] sm:text-[18px] sm:leading-[27px]"
           >
-            펫보험과 장례 절차 등 필요한 정보를 정리해,
+            펫보험과 장례 절차 등 필요한 정보를 제공하여,
             <br />
             이별의 순간을 보다 차분히 준비할 수 있도록 돕습니다.
           </p>
@@ -52,8 +52,8 @@ export default function Advice() {
       </h3>
 
       <p className="font-pretendard text-[15px] leading-[22px] tracking-[-0.5px] text-[#5c4b42] sm:text-[17px] sm:leading-[25px]">
-        장례 절차와 준비 사항을 혼자 알아보지 않아도 되도록, 반려동물
-        장례 경험이 있는 전문가와 연결할 수 있도록 돕습니다. 장례
+        장례 절차와 준비 사항을 혼자 알아보지 않도록, 반려동물
+        장례 전문가와 연결해 드립니다. 장례
         방식, 필요한 절차, 준비물 등 이별 전후에 필요한 내용을
         차분히 확인할 수 있도록 안내합니다.
       </p>
@@ -86,8 +86,7 @@ export default function Advice() {
       </h3>
 
       <p className="font-pretendard text-[15px] leading-[22px] tracking-[-0.5px] text-[#5c4b42] sm:text-[17px] sm:leading-[25px]">
-        반려동물의 치료·장례와 관련된 비용 부담을 미리 살펴볼 수
-        있도록, 보장 범위와 주요 조건, 가입 전 확인할 정보를 알기
+        반려동물의 치료·장례와 관련된 비용을 미리 대비할 수 있도록, 보장 범위와 주요 조건, 가입 전 확인할 정보를 알기
         쉽게 안내합니다. 상황에 맞는 보험을 비교하고 준비할 수
         있도록 필요한 정보를 제공합니다.
       </p>

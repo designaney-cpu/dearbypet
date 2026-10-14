@@ -75,7 +75,7 @@ export default function PetLossSupport() {
           혼자 감당하기 어려운 마음을 나누고,
           <br className="hidden sm:block" />
           <span className="sm:hidden"> </span>
-          펫로스 상담사와 함께 회복의 시간을 이어갈 수 있도록 돕습니다.
+          펫로스 상담사와 함께 회복의 시간을 이어갈 수 있도록 도와드리겠습니다.
         </p>
       </div>
 
@@ -126,22 +126,7 @@ export default function PetLossSupport() {
         </ol>
       </div>
 
-      {/* 함께하는 방식: 피그마 원문 */}
-      <div className="px-6">
-        <aside aria-labelledby="care-guidance-title" className="mx-auto max-w-[1356px] rounded-[4px] bg-white px-6 py-6 shadow-[inset_0_0_0_1px_#e5e9ee] lg:px-10">
-          <h3 id="care-guidance-title" className="font-gowun text-[20px] font-normal leading-[29px] tracking-[-0.1px] text-[#412826]">
-            함께하는 방식
-          </h3>
-          <ul className="font-pretendard mt-3 space-y-1 text-[15px] leading-[24px] tracking-[-0.5px]">
-            {guidance.map((text) => (
-              <li key={text} className="flex gap-1">
-                <span aria-hidden="true" className="shrink-0">+</span>
-                <span>{text}</span>
-              </li>
-            ))}
-          </ul>
-        </aside>
-      </div>
+      
     </section>
   );
 }
