@@ -1,0 +1,1 @@
+const React=require('react'); const {createRoot}=require('react-dom/client'); const Login=require('./LoginForm.cjs').default; createRoot(document.getElementById('root')).render(React.createElement(Login));
