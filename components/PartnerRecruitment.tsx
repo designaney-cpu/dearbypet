@@ -227,7 +227,7 @@ export default function PartnerRecruitment() {
                       <option value="" disabled>분야 선택</option>
                       <option value="펫로스 상담" className="text-[#5c4b42]">펫로스 상담</option>
                       <option value="장례 지도" className="text-[#5c4b42]">장례 지도</option>
-                      <option value="펫보험" className="text-[#5c4b42]">펫보험</option>
+                      <option value="메모리얼 제작 전문가" className="text-[#5c4b42]">메모리얼 제작 전문가</option>
                     </select>
                     <img
                       src="/images/partner/select-arrow.svg"

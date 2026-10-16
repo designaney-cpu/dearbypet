@@ -54,14 +54,46 @@ const funeralQualifications = [
   },
 ] as const;
 
+const memorialQualifications = [
+  {
+    title: "액자·아트워크 제작",
+    description: [
+      "반려동물의 사진과 이야기를 바탕으로",
+      "초상화와 추억 액자를 제작할 수 있는 분",
+    ],
+    icon: "frame",
+  },
+  {
+    title: "인형·오브제 제작",
+    description: [
+      "반려동물의 모습과 특징을 세심하게 담아",
+      "인형과 기념 오브제를 제작할 수 있는 분",
+    ],
+    icon: "doll",
+  },
+  {
+    title: "추억 보관 키트 제작",
+    description: [
+      "사진과 소중한 물건을 오래 간직하도록",
+      "메모리얼 박스와 보관 키트를 제작할 수 있는 분",
+    ],
+    icon: "box",
+  },
+] as const;
+
 const guidance = [
   "전문 분야와 활동 형태에 따라 DearByPet 서비스 내 전문가 및 파트너로 함께합니다.",
   "펫로스 상담은 비대면을 중심으로, 장례지도는 보호자의 상황과 지역을 고려해 연결하며 세부 방식은 파트너와 협의합니다.",
   "지원서 확인 후 자격과 경력을 검토하고, 간단한 인터뷰를 거쳐 활동 분야와 조건을 협의합니다.",
 ];
 
-type FuneralIconType = (typeof funeralQualifications)[number]["icon"];
+type FuneralIconType =
+  (typeof funeralQualifications)[number]["icon"];
 
+type MemorialIconType =
+  (typeof memorialQualifications)[number]["icon"];
+
+/* 장례지도 아이콘 */
 function FuneralIcon({ type }: { type: FuneralIconType }) {
   return (
     <svg
@@ -78,7 +110,6 @@ function FuneralIcon({ type }: { type: FuneralIconType }) {
     >
       {type === "flower" && (
         <>
-          {/* 장례 실무 경험: 추모의 꽃 */}
           <path d="M35 33C24 31 20 23 23 15C29 16 33 20 35 25" />
           <path d="M35 33C46 31 50 23 47 15C41 16 37 20 35 25" />
           <path d="M35 29C29 24 29 16 35 9C41 16 41 24 35 29Z" />
@@ -91,7 +122,6 @@ function FuneralIcon({ type }: { type: FuneralIconType }) {
 
       {type === "guide" && (
         <>
-          {/* 절차와 준비 안내: 체크리스트 */}
           <path d="M25 14H21A5 5 0 0 0 16 19V55A5 5 0 0 0 21 60H49A5 5 0 0 0 54 55V19A5 5 0 0 0 49 14H45" />
           <rect x="25" y="9" width="20" height="11" rx="4" />
 
@@ -105,7 +135,6 @@ function FuneralIcon({ type }: { type: FuneralIconType }) {
 
       {type === "heart" && (
         <>
-          {/* 존중과 배려: 서로 마주하는 두 사람과 마음 */}
           <circle cx="15" cy="22" r="7" />
           <circle cx="55" cy="22" r="7" />
 
@@ -122,8 +151,59 @@ function FuneralIcon({ type }: { type: FuneralIconType }) {
   );
 }
 
+/* 메모리얼 제작 아이콘 */
+function MemorialIcon({ type }: { type: MemorialIconType }) {
+  return (
+    <svg
+      width="70"
+      height="70"
+      viewBox="0 0 70 70"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={3.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="block size-[70px] shrink-0 text-[#412826]"
+    >
+      {type === "frame" && (
+        <>
+          <rect x="10" y="10" width="50" height="50" rx="5" />
+          <rect x="18" y="18" width="34" height="34" rx="2" />
+          <circle cx="28" cy="28" r="4" />
+          <path d="M18 45L29 35L37 42L43 36L52 45" />
+        </>
+      )}
 
-/* 두 분야에서 공통으로 사용하는 카드 */
+      {type === "doll" && (
+        <>
+          <path d="M23 19L14 12L11 30L19 34" />
+          <path d="M47 19L56 12L59 30L51 34" />
+
+          <rect x="19" y="17" width="32" height="29" rx="13" />
+
+          <path d="M28 29H28.1M42 29H42.1" />
+          <path d="M32 35H38L35 38Z" />
+          <path d="M35 38V41" />
+
+          <path d="M25 44L21 57Q21 61 26 61H44Q49 61 49 57L45 44" />
+          <path d="M29 54V61M41 54V61" />
+        </>
+      )}
+
+      {type === "box" && (
+        <>
+          <rect x="10" y="27" width="50" height="11" rx="3" />
+          <path d="M15 38V57A4 4 0 0 0 19 61H51A4 4 0 0 0 55 57V38" />
+          <path d="M29 46H41" />
+          <path d="M35 23L26 15C20 9 28 3 35 10C42 3 50 9 44 15L35 23Z" />
+        </>
+      )}
+    </svg>
+  );
+}
+
+/* 공통 카드 */
 function QualificationCard({
   title,
   description,
@@ -232,6 +312,26 @@ export default function PartnerRecruit() {
                 title={item.title}
                 description={item.description}
                 icon={<FuneralIcon type={item.icon} />}
+              />
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* 메모리얼 키트 전문 제작가 */}
+      <div className="px-6">
+        <div className="mx-auto flex max-w-[1356px] flex-col gap-5 lg:gap-6">
+          <h3 className="font-gowun text-[26px] font-normal leading-[40px] tracking-[-0.5px] lg:text-[32px]">
+            메모리얼 키트 전문 제작가
+          </h3>
+
+          <ul className="grid gap-5 lg:grid-cols-3 lg:gap-[30px]">
+            {memorialQualifications.map((item) => (
+              <QualificationCard
+                key={item.title}
+                title={item.title}
+                description={item.description}
+                icon={<MemorialIcon type={item.icon} />}
               />
             ))}
           </ul>

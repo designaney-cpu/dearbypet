@@ -273,10 +273,10 @@ export default function ExpertRecruitment() {
                       </option>
 
                       <option
-                        value="펫보험"
+                        value="메모리얼 제작 전문"
                         className="text-[#5c4b42]"
                       >
-                        펫보험
+                        메모리얼 제작 전문
                       </option>
                     </select>
 
