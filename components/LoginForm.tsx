@@ -90,32 +90,28 @@ export default function LoginForm({ signupHref }: LoginFormProps) {
 
         {/* 버튼과 회원가입 */}
         <div className="flex flex-col items-center gap-6">
-          <button
-            type="submit"
-            className="h-[56px] w-full cursor-pointer rounded-[8px] border border-[#1e1928]/16 bg-[#412826] text-[18px] leading-[21px] text-white transition-colors duration-200 hover:bg-[#7A5C50] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8574ac] motion-reduce:transition-none"
-          >
-            로그인
-          </button>
-          <a
-            href={signupHref ?? "#"}
-            onClick={(event) => {
-              if (!signupHref) {
-                event.preventDefault();
-                setNotice("회원가입 기능을 준비 중입니다.");
-              }
-            }}
-            className="rounded-sm text-[18px] leading-[27px] tracking-[-0.5px] underline underline-offset-4 hover:text-[#7A5C50] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8574ac]"
-          >
-            회원가입
-          </a>
-          <p
-            role="status"
-            aria-live="polite"
-            className={notice ? "text-center text-[14px] leading-6" : "sr-only"}
-          >
-            {notice}
-          </p>
-        </div>
+  <button
+    type="submit"
+    className="h-[56px] w-full cursor-pointer rounded-[8px] border border-[#1e1928]/16 bg-[#412826] text-[18px] leading-[21px] text-white transition-colors duration-200 hover:bg-[#7A5C50] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8574ac] motion-reduce:transition-none"
+  >
+    로그인
+  </button>
+
+  <a
+    href="/signup"
+    className="rounded-sm text-[18px] leading-[27px] tracking-[-0.5px] underline underline-offset-4 hover:text-[#7A5C50] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8574ac]"
+  >
+    회원가입
+  </a>
+
+  <p
+    role="status"
+    aria-live="polite"
+    className={notice ? "text-center text-[14px] leading-6" : "sr-only"}
+  >
+    {notice}
+  </p>
+</div>
       </form>
     </section>
   );
