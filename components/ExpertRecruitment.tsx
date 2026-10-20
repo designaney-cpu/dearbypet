@@ -3,7 +3,7 @@
 import { useId, useRef, useState } from "react";
 import type { FormEvent } from "react";
 
-const FORMINIT_URL = "https://forminit.com/f/s6sq5ur2whg";
+const FORMINIT_URL = "https://forminit.com/f/sx5bc42d1tc";
 
 const MAX_ATTACHMENT_BYTES = 10_000_000; // 10MB
 
@@ -63,7 +63,7 @@ export default function ExpertRecruitment() {
         headers: {
           Accept: "application/json",
         },
-        // 파일을 전송하므로 Content-Type은 브라우저가 지정하도록 둡니다.
+        // 파일 전송 시 Content-Type은 브라우저가 지정합니다.
         body: data,
       });
 
@@ -90,7 +90,7 @@ export default function ExpertRecruitment() {
         throw new Error(`${message} (HTTP ${response.status})`);
       }
 
-      // 단순 HTTP 200이 아닌 실제 접수 응답과 접수 번호까지 확인합니다.
+      // 실제 접수 응답과 접수 번호를 확인합니다.
       if (
         typeof result.submission?.hashId !== "string" ||
         !result.submission.hashId
@@ -133,7 +133,6 @@ export default function ExpertRecruitment() {
             className="absolute inset-0 h-full w-full object-cover"
           />
 
-          {/* #000000 60% overlay */}
           <div className="absolute inset-0 bg-black/60" />
         </div>
 
@@ -350,8 +349,7 @@ export default function ExpertRecruitment() {
                       const file = input.files?.[0];
 
                       const error =
-                        file &&
-                        file.size > MAX_ATTACHMENT_BYTES
+                        file && file.size > MAX_ATTACHMENT_BYTES
                           ? "첨부파일은 10MB 이하로 선택해주세요."
                           : "";
 
@@ -367,9 +365,7 @@ export default function ExpertRecruitment() {
                     title={fileName}
                     className="flex h-[56px] min-w-0 flex-1 items-center rounded-[8px] border border-[#dbdadd] px-4 text-[18px]"
                   >
-                    <span className="truncate">
-                      {fileName}
-                    </span>
+                    <span className="truncate">{fileName}</span>
                   </div>
 
                   <label
@@ -498,10 +494,9 @@ export default function ExpertRecruitment() {
             className="font-pretendard flex flex-col items-center justify-center rounded-[25.3px] bg-white px-[50px] py-[50px] text-center text-[#5c4b42]"
             style={{
               width: "min(672px, 100%)",
-              boxShadow:
-                "0 0 21.502px 5.059px rgba(0,0,0,0.09)",
+              boxShadow: "0 0 21.502px 5.059px rgba(0,0,0,0.09)",
             }}
-            onClick={(e) => e.stopPropagation()}
+            onClick={(event) => event.stopPropagation()}
           >
             <p
               id="modal-title"
@@ -524,7 +519,6 @@ export default function ExpertRecruitment() {
                 확인
               </button>
             </div>
-            
           </div>
         </div>
       )}

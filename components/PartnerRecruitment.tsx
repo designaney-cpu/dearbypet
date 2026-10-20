@@ -3,7 +3,7 @@
 import { useId, useRef, useState } from "react";
 import type { FormEvent } from "react";
 
-const FORMINIT_URL = "https://forminit.com/f/s6sq5ur2whg";
+const FORMINIT_URL = "https://forminit.com/f/sx5bc42d1tc";
 
 const MAX_ATTACHMENT_BYTES = 10_000_000; // 10MB
 
@@ -16,6 +16,7 @@ export default function PartnerRecruitment() {
   const id = useId();
   const formRef = useRef<HTMLFormElement>(null);
   const submittingRef = useRef(false);
+
   const [fileName, setFileName] = useState("");
   const [fileError, setFileError] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -24,55 +25,82 @@ export default function PartnerRecruitment() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
     if (submittingRef.current) return;
 
     const form = event.currentTarget;
+
     if (!form.reportValidity()) return;
+
     setSubmitError("");
     setSubmitted(false);
 
     const data = new FormData(form);
+
     if (data.get("_gotcha")) return;
 
     const attachment = data.get("fi-file-attachment");
-    if (attachment instanceof File && attachment.size > MAX_ATTACHMENT_BYTES) {
+
+    if (
+      attachment instanceof File &&
+      attachment.size > MAX_ATTACHMENT_BYTES
+    ) {
       setFileError("첨부파일은 10MB 이하로 선택해주세요.");
       return;
     }
+
     if (attachment instanceof File && !attachment.name) {
       data.delete("fi-file-attachment");
     }
 
     submittingRef.current = true;
     setSubmitting(true);
+
     try {
       const response = await fetch(FORMINIT_URL, {
         method: "POST",
-        headers: { Accept: "application/json" },
+        headers: {
+          Accept: "application/json",
+        },
         // 파일을 전송하므로 Content-Type은 브라우저가 지정하도록 둡니다.
         body: data,
       });
+
       const result = await response.json().catch(() => null);
 
       if (!response.ok || result?.success !== true) {
         if (response.status === 429) {
-          throw new Error("요청이 너무 빠릅니다. 30초 정도 기다린 후 다시 제출해주세요.");
+          throw new Error(
+            "요청이 너무 빠릅니다. 30초 정도 기다린 후 다시 제출해주세요."
+          );
         }
+
         if (result?.error === "MISSING_API_KEY") {
-          throw new Error("Forminit의 Authentication mode를 Public으로 설정해주세요.");
+          throw new Error(
+            "Forminit의 Authentication mode를 Public으로 설정해주세요."
+          );
         }
-        const message = typeof result?.message === "string"
-          ? result.message
-          : "접수 결과를 확인하지 못했습니다. Forminit의 제출 목록을 확인해주세요.";
+
+        const message =
+          typeof result?.message === "string"
+            ? result.message
+            : "접수 결과를 확인하지 못했습니다. Forminit의 제출 목록을 확인해주세요.";
+
         throw new Error(`${message} (HTTP ${response.status})`);
       }
 
-      // 단순 HTTP 200이 아닌 실제 접수 응답과 접수 번호까지 확인합니다.
-      if (typeof result.submission?.hashId !== "string" || !result.submission.hashId) {
-        throw new Error("접수 번호를 확인하지 못했습니다. 다시 보내기 전에 Forminit의 제출 목록을 확인해주세요.");
+      // 실제 접수 응답과 접수 번호를 확인합니다.
+      if (
+        typeof result.submission?.hashId !== "string" ||
+        !result.submission.hashId
+      ) {
+        throw new Error(
+          "접수 번호를 확인하지 못했습니다. 다시 보내기 전에 Forminit의 제출 목록을 확인해주세요."
+        );
       }
 
       form.reset();
+
       setFileName("");
       setFileError("");
       setSubmitted(true);
@@ -99,11 +127,14 @@ export default function PartnerRecruitment() {
           className="absolute inset-x-0 top-0 h-1/2 bg-[#8574ac]"
         />
 
-        {/* 기존 콘텐츠 */}
+        {/* 콘텐츠 */}
         <div className="relative z-10 mx-auto grid max-w-[1356px] items-start gap-12 lg:grid-cols-2">
-          {/* 왼쪽 설명: 기존 문구와 스크롤 효과 유지 */}
+          {/* 왼쪽 설명 */}
           <div className="min-w-0 text-white">
-            <p data-reveal className="mb-2 text-[26px] font-bold uppercase">
+            <p
+              data-reveal
+              className="mb-2 text-[26px] font-bold uppercase"
+            >
               Partner Recruitment
             </p>
 
@@ -137,6 +168,7 @@ export default function PartnerRecruitment() {
             </a>
           </div>
 
+          {/* 지원 폼 */}
           <div
             data-reveal
             data-reveal-delay="150"
@@ -159,6 +191,7 @@ export default function PartnerRecruitment() {
                 style={{ display: "none" }}
               />
 
+              {/* 구분 */}
               <fieldset className="m-0 min-w-0 border-0 p-0 pb-[10px]">
                 <legend className="mb-3 px-0 pt-[3.5px] text-[18px] leading-[27px]">
                   구분 *
@@ -178,6 +211,7 @@ export default function PartnerRecruitment() {
                         required
                         className="peer sr-only"
                       />
+
                       <img
                         src="/images/partner/check-unselected.svg"
                         alt=""
@@ -185,6 +219,7 @@ export default function PartnerRecruitment() {
                         height={26}
                         className="block h-[26px] w-[26px] shrink-0 rounded-full peer-checked:hidden peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-[#8574ac]"
                       />
+
                       <img
                         src="/images/partner/check-selected.svg"
                         alt=""
@@ -192,16 +227,19 @@ export default function PartnerRecruitment() {
                         height={26}
                         className="hidden h-[26px] w-[26px] shrink-0 rounded-full peer-checked:block peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-[#8574ac]"
                       />
+
                       <span>{type}</span>
                     </label>
                   ))}
                 </div>
               </fieldset>
 
+              {/* 단체명 / 성명 */}
               <div className="flex flex-col gap-[4.5px] pt-[3.5px]">
                 <label htmlFor={`${id}-name`} className={labelClass}>
                   단체명(성명) *
                 </label>
+
                 <input
                   id={`${id}-name`}
                   name="fi-sender-fullName"
@@ -211,11 +249,16 @@ export default function PartnerRecruitment() {
                 />
               </div>
 
+              {/* 분야 + 휴대폰 */}
               <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="flex min-w-0 flex-col gap-[4.5px] pt-[11.5px]">
-                  <label htmlFor={`${id}-specialty`} className={labelClass}>
+                  <label
+                    htmlFor={`${id}-specialty`}
+                    className={labelClass}
+                  >
                     분야 *
                   </label>
+
                   <div className="relative">
                     <select
                       id={`${id}-specialty`}
@@ -224,11 +267,32 @@ export default function PartnerRecruitment() {
                       required
                       className={`${fieldClass} cursor-pointer appearance-none pr-12 invalid:text-[#939393]`}
                     >
-                      <option value="" disabled>분야 선택</option>
-                      <option value="펫로스 상담" className="text-[#5c4b42]">펫로스 상담</option>
-                      <option value="장례 지도" className="text-[#5c4b42]">장례 지도</option>
-                      <option value="메모리얼 제작 전문가" className="text-[#5c4b42]">메모리얼 제작 전문가</option>
+                      <option value="" disabled>
+                        분야 선택
+                      </option>
+
+                      <option
+                        value="펫로스 상담"
+                        className="text-[#5c4b42]"
+                      >
+                        펫로스 상담
+                      </option>
+
+                      <option
+                        value="장례 지도"
+                        className="text-[#5c4b42]"
+                      >
+                        장례 지도
+                      </option>
+
+                      <option
+                        value="메모리얼 제작 전문가"
+                        className="text-[#5c4b42]"
+                      >
+                        메모리얼 제작 전문가
+                      </option>
                     </select>
+
                     <img
                       src="/images/partner/select-arrow.svg"
                       alt=""
@@ -243,6 +307,7 @@ export default function PartnerRecruitment() {
                   <label htmlFor={`${id}-phone`} className={labelClass}>
                     휴대폰 번호 *
                   </label>
+
                   <input
                     id={`${id}-phone`}
                     name="fi-text-phone"
@@ -254,10 +319,12 @@ export default function PartnerRecruitment() {
                 </div>
               </div>
 
+              {/* 이메일 */}
               <div className="flex flex-col gap-[4.5px] pt-[3.5px]">
                 <label htmlFor={`${id}-email`} className={labelClass}>
                   답변받으실 이메일 주소 *
                 </label>
+
                 <input
                   id={`${id}-email`}
                   name="fi-sender-email"
@@ -268,10 +335,12 @@ export default function PartnerRecruitment() {
                 />
               </div>
 
+              {/* 파일 첨부 */}
               <div className="flex flex-col gap-[4.5px] pt-[3.5px]">
                 <label htmlFor={`${id}-file`} className={labelClass}>
                   파일 첨부
                 </label>
+
                 <div className="relative flex min-w-0 gap-3">
                   <input
                     id={`${id}-file`}
@@ -283,14 +352,18 @@ export default function PartnerRecruitment() {
                     onChange={(event) => {
                       const input = event.currentTarget;
                       const file = input.files?.[0];
-                      const error = file && file.size > MAX_ATTACHMENT_BYTES
-                        ? "첨부파일은 10MB 이하로 선택해주세요."
-                        : "";
+
+                      const error =
+                        file && file.size > MAX_ATTACHMENT_BYTES
+                          ? "첨부파일은 10MB 이하로 선택해주세요."
+                          : "";
+
                       input.setCustomValidity(error);
                       setFileName(file?.name ?? "");
                       setFileError(error);
                     }}
                   />
+
                   <div
                     aria-hidden="true"
                     title={fileName}
@@ -298,6 +371,7 @@ export default function PartnerRecruitment() {
                   >
                     <span className="truncate">{fileName}</span>
                   </div>
+
                   <label
                     htmlFor={`${id}-file`}
                     className="flex h-[56px] w-[87px] shrink-0 cursor-pointer items-center justify-center rounded-[8px] border border-[#412826] text-[18px] transition-colors hover:bg-[#f4f0ed] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-[#8574ac]"
@@ -305,18 +379,29 @@ export default function PartnerRecruitment() {
                     찾기
                   </label>
                 </div>
-                <p id={`${id}-file-help`} className="text-[14px] leading-[22px] text-[#8574ac]">
+
+                <p
+                  id={`${id}-file-help`}
+                  className="text-[14px] leading-[22px] text-[#8574ac]"
+                >
                   파일 1개, 최대 10MB까지 첨부할 수 있습니다.
                 </p>
-                <p id={`${id}-file-error`} role="alert" className="text-[14px] leading-[22px] text-red-700">
+
+                <p
+                  id={`${id}-file-error`}
+                  role="alert"
+                  className="text-[14px] leading-[22px] text-red-700"
+                >
                   {fileError}
                 </p>
               </div>
 
+              {/* 내용 */}
               <div className="flex flex-col gap-[4.5px] pt-[11.5px]">
                 <label htmlFor={`${id}-message`} className={labelClass}>
                   내용
                 </label>
+
                 <textarea
                   id={`${id}-message`}
                   name="fi-text-message"
@@ -324,6 +409,7 @@ export default function PartnerRecruitment() {
                 />
               </div>
 
+              {/* 개인정보 동의 */}
               <label className="relative flex cursor-pointer items-start gap-3 text-[18px] font-semibold leading-[27px]">
                 <input
                   type="checkbox"
@@ -333,6 +419,7 @@ export default function PartnerRecruitment() {
                   aria-describedby={`${id}-privacy`}
                   className="peer sr-only"
                 />
+
                 <img
                   src="/images/partner/check-unselected.svg"
                   alt=""
@@ -340,6 +427,7 @@ export default function PartnerRecruitment() {
                   height={26}
                   className="mt-px block h-[26px] w-[26px] shrink-0 rounded-full peer-checked:hidden peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-[#8574ac]"
                 />
+
                 <img
                   src="/images/partner/consent-selected.svg"
                   alt=""
@@ -347,6 +435,7 @@ export default function PartnerRecruitment() {
                   height={25}
                   className="mt-px hidden h-[25px] w-[26px] shrink-0 rounded-full peer-checked:block peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-[#8574ac]"
                 />
+
                 <span>
                   개인정보 수집 및 이용에 대한 안내에 동의합니다.* (필수)
                 </span>
@@ -357,13 +446,17 @@ export default function PartnerRecruitment() {
                 className="list-decimal pl-6 text-[16px] leading-[24px]"
               >
                 <li>
-                  디어바이펫은 사업 제휴 문의 처리를 위해 이름, 전화번호, 이메일 주소를 수집합니다.
+                  디어바이펫은 사업 제휴 문의 처리를 위해 이름,
+                  전화번호, 이메일 주소를 수집합니다.
                 </li>
+
                 <li>
-                  수집한 개인정보는 이외의 목적으로는 사용하지 않으며, 문의처리 종료시 파기합니다.
+                  수집한 개인정보는 이외의 목적으로는 사용하지 않으며,
+                  문의처리 종료시 파기합니다.
                 </li>
               </ol>
 
+              {/* 제출 버튼 */}
               <div className="flex justify-center pt-3">
                 <button
                   type="submit"
@@ -373,6 +466,7 @@ export default function PartnerRecruitment() {
                   {submitting ? "제출 중..." : "제출하기"}
                 </button>
               </div>
+
               <p
                 role="alert"
                 aria-live="polite"
@@ -401,9 +495,8 @@ export default function PartnerRecruitment() {
               width: "min(672px, 100%)",
               boxShadow: "0 0 21.502px 5.059px rgba(0,0,0,0.09)",
             }}
-            onClick={(e) => e.stopPropagation()}
+            onClick={(event) => event.stopPropagation()}
           >
-            {/* 제목 */}
             <p
               id="modal-title"
               className="text-[28px] font-bold leading-[27px] tracking-[-0.5px] text-[#5c4b42]"
@@ -411,14 +504,12 @@ export default function PartnerRecruitment() {
               지원해 주셔서 감사합니다!
             </p>
 
-            {/* 본문 */}
             <p className="mt-4 text-[16px] font-normal leading-[24px] tracking-[-0.5px] text-[#5c4b42]">
               지원 내용이 접수되었습니다.
               <br />
               검토 후 순차적으로 안내드리겠습니다.
             </p>
 
-            {/* 버튼 영역 */}
             <div className="flex items-center justify-center self-stretch pt-[12px]">
               <button
                 onClick={() => setSubmitted(false)}
