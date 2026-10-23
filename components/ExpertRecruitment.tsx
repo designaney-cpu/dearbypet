@@ -445,8 +445,7 @@ export default function ExpertRecruitment() {
                 className="list-decimal pl-6 text-[16px] leading-[24px]"
               >
                 <li>
-                  디어바이펫은 사업 제휴 문의 처리를 위해 이름,
-                  전화번호, 이메일 주소를 수집합니다.
+                  디어바이펫은 전문가 지원 및 사업 제휴 문의 처리를 위해 이름, 전화번호, 이메일 주소를 수집합니다.
                 </li>
 
                 <li>
