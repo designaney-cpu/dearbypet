@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import MainPopup from "@/components/MainPopup";
 import Hero from "@/components/Hero";
 import Overview from "@/components/Overview";
 import Service from "@/components/Service_home";
@@ -10,6 +11,7 @@ export default function Home() {
   return (
     <>
       <Header />
+      <MainPopup />
       <Hero />
       <Overview />
       <Service />
