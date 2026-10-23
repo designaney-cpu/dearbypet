@@ -10,9 +10,10 @@ const MAX_ATTACHMENT_BYTES = 10_000_000; // 10MB
 const fieldClass =
   "h-[56px] w-full min-w-0 rounded-[8px] border border-[#dbdadd] bg-white px-4 text-[18px] leading-[27px] tracking-[-0.5px] text-[#5c4b42] outline-none transition-colors focus:border-[#8574ac] focus:ring-2 focus:ring-[#8574ac]/20";
 
-const labelClass = "block text-[18px] font-normal leading-[27px]";
+const labelClass =
+  "block text-[18px] font-normal leading-[27px]";
 
-export default function PartnerRecruitment() {
+export default function ExpertRecruitment() {
   const id = useId();
   const formRef = useRef<HTMLFormElement>(null);
   const submittingRef = useRef(false);
@@ -62,7 +63,7 @@ export default function PartnerRecruitment() {
         headers: {
           Accept: "application/json",
         },
-        // 파일을 전송하므로 Content-Type은 브라우저가 지정하도록 둡니다.
+        // 파일 전송 시 Content-Type은 브라우저가 지정합니다.
         body: data,
       });
 
@@ -120,59 +121,44 @@ export default function PartnerRecruitment() {
 
   return (
     <>
-      <section className="relative w-full bg-white px-6 py-20">
-        {/* 상단 절반만 연보라 배경 */}
+      <section
+        id="expert-apply"
+        className="relative w-full scroll-mt-[110px] bg-white px-6 py-20"
+      >
+        {/* 상단 절반 이미지 배경 */}
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 top-0 h-1/2 bg-[#8574ac]"
-        />
+          className="absolute inset-x-0 top-0 h-1/2 overflow-hidden"
+        >
+          <img
+            src="/images/expert/expert_01.jpg"
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+
+          <div className="absolute inset-0 bg-black/60" />
+        </div>
 
         {/* 콘텐츠 */}
-        <div className="relative z-10 mx-auto grid max-w-[1356px] items-start gap-12 lg:grid-cols-2">
-          {/* 왼쪽 설명 */}
-          <div className="min-w-0 text-white">
-            <p
-              data-reveal
-              className="mb-2 text-[26px] font-bold uppercase"
-            >
-              Partner Recruitment
-            </p>
-
+        <div className="relative z-10 mx-auto flex w-full max-w-[1356px] flex-col items-center gap-12">
+          {/* 제목 */}
+          <div className="w-full text-center text-white">
             <h2
               data-reveal
               data-reveal-delay="150"
-              className="font-gowun text-[32px] font-normal leading-[45px] text-[#ffffff]"
+              className="font-gowun text-[32px] font-normal leading-[45px] text-white"
             >
-              함께 만들어갈 전문가를
+              보호자의 마음이 머물 수 있는 시간을
               <br />
-              찾고 있습니다.
+              함께 만들어주세요.
             </h2>
-
-            <p
-              data-reveal
-              data-reveal-delay="300"
-              className="mt-4 text-[18px] leading-[27px]"
-            >
-              경험과 전문성을 바탕으로 보호자의 이별 여정을 세심하게 지원하고,
-              <br />
-              DearByPet과 함께 새로운 이별 케어 서비스를 만들어갈 분을 기다립니다.
-            </p>
-
-            <a
-              href="/expert"
-              data-reveal
-              data-reveal-delay="450"
-              className="mt-6 inline-flex items-center justify-center rounded-full border-2 border-white bg-transparent px-5 py-2 text-[14px] text-white hover:bg-white hover:text-[#412826]"
-            >
-              전문가 모집 자세히 보기
-            </a>
           </div>
 
           {/* 지원 폼 */}
           <div
             data-reveal
             data-reveal-delay="150"
-            className="font-pretendard min-w-0 rounded-[25.3px] bg-white p-6 text-[#5c4b42] shadow-[0_0_10.751px_rgba(0,0,0,0.09)] sm:p-[50px]"
+            className="font-pretendard w-full max-w-[672px] rounded-[25.3px] bg-white p-6 text-[#5c4b42] shadow-[0_0_10.751px_rgba(0,0,0,0.09)] sm:p-[50px]"
           >
             <form
               ref={formRef}
@@ -236,7 +222,10 @@ export default function PartnerRecruitment() {
 
               {/* 단체명 / 성명 */}
               <div className="flex flex-col gap-[4.5px] pt-[3.5px]">
-                <label htmlFor={`${id}-name`} className={labelClass}>
+                <label
+                  htmlFor={`${id}-name`}
+                  className={labelClass}
+                >
                   단체명(성명) *
                 </label>
 
@@ -286,10 +275,10 @@ export default function PartnerRecruitment() {
                       </option>
 
                       <option
-                        value="메모리얼 제작 전문가"
+                        value="메모리얼 제작 전문"
                         className="text-[#5c4b42]"
                       >
-                        메모리얼 제작 전문가
+                        메모리얼 제작 전문
                       </option>
                     </select>
 
@@ -304,7 +293,10 @@ export default function PartnerRecruitment() {
                 </div>
 
                 <div className="flex min-w-0 flex-col gap-[4.5px] pt-[11.5px]">
-                  <label htmlFor={`${id}-phone`} className={labelClass}>
+                  <label
+                    htmlFor={`${id}-phone`}
+                    className={labelClass}
+                  >
                     휴대폰 번호 *
                   </label>
 
@@ -321,7 +313,10 @@ export default function PartnerRecruitment() {
 
               {/* 이메일 */}
               <div className="flex flex-col gap-[4.5px] pt-[3.5px]">
-                <label htmlFor={`${id}-email`} className={labelClass}>
+                <label
+                  htmlFor={`${id}-email`}
+                  className={labelClass}
+                >
                   답변받으실 이메일 주소 *
                 </label>
 
@@ -335,9 +330,12 @@ export default function PartnerRecruitment() {
                 />
               </div>
 
-              {/* 파일 첨부 */}
+              {/* 파일 */}
               <div className="flex flex-col gap-[4.5px] pt-[3.5px]">
-                <label htmlFor={`${id}-file`} className={labelClass}>
+                <label
+                  htmlFor={`${id}-file`}
+                  className={labelClass}
+                >
                   파일 첨부
                 </label>
 
@@ -359,6 +357,7 @@ export default function PartnerRecruitment() {
                           : "";
 
                       input.setCustomValidity(error);
+
                       setFileName(file?.name ?? "");
                       setFileError(error);
                     }}
@@ -398,7 +397,10 @@ export default function PartnerRecruitment() {
 
               {/* 내용 */}
               <div className="flex flex-col gap-[4.5px] pt-[11.5px]">
-                <label htmlFor={`${id}-message`} className={labelClass}>
+                <label
+                  htmlFor={`${id}-message`}
+                  className={labelClass}
+                >
                   내용
                 </label>
 
@@ -446,7 +448,8 @@ export default function PartnerRecruitment() {
                 className="list-decimal pl-6 text-[16px] leading-[24px]"
               >
                 <li>
-                  디어바이펫은 전문가 지원 및 사업 제휴 문의 처리를 위해 이름, 전화번호, 이메일 주소를 수집합니다.
+                  디어바이펫은 전문가 지원 및 사업 제휴 문의 처리를 위해
+                  이름, 전화번호, 이메일 주소를 수집합니다.
                 </li>
 
                 <li>
@@ -485,7 +488,9 @@ export default function PartnerRecruitment() {
           aria-modal="true"
           aria-labelledby="modal-title"
           className="fixed inset-0 z-50 flex items-center justify-center px-6"
-          style={{ backgroundColor: "rgba(0,0,0,0.45)" }}
+          style={{
+            backgroundColor: "rgba(0,0,0,0.45)",
+          }}
           onClick={() => setSubmitted(false)}
         >
           <div

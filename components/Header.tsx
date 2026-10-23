@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const NAV_ITEMS = [
   { label: "디어바이펫 소개", href: "/about" },
   { label: "서비스 소개", href: "/service" },
-  { label: "전문가 지원", href: "/expert" },
-  // 고객지원 숨김 처리
-  // { label: "고객지원", href: "support" },
+  { label: "전문가 모집 안내", href: "/expert" },
 ];
+
+const EXPERT_APPLY_URL = "/expert#expert-apply";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -19,25 +19,31 @@ export default function Header() {
   const toggleButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  // 모바일 메뉴가 열리면 스크롤 잠금 (html + body 모두 잠가서 iOS 바운스 스크롤 방지)
+  const closeMenu = useCallback(() => {
+    setMenuOpen(false);
+    toggleButtonRef.current?.focus({ preventScroll: true });
+  }, []);
+
+  // 모바일 메뉴가 열려 있는 동안 스크롤 잠금
   useEffect(() => {
+    if (!menuOpen) return;
+
     const html = document.documentElement;
     const body = document.body;
 
-    if (menuOpen) {
-      html.style.overflow = "hidden";
-      body.style.overflow = "hidden";
-    } else {
-      html.style.overflow = "";
-      body.style.overflow = "";
-    }
+    const previousHtmlOverflow = html.style.overflow;
+    const previousBodyOverflow = body.style.overflow;
+
+    html.style.overflow = "hidden";
+    body.style.overflow = "hidden";
 
     return () => {
-      html.style.overflow = "";
-      body.style.overflow = "";
+      html.style.overflow = previousHtmlOverflow;
+      body.style.overflow = previousBodyOverflow;
     };
   }, [menuOpen]);
 
+  // 스크롤 위치에 따라 헤더 배경 변경
   useEffect(() => {
     const handleScroll = () => {
       let scrolled =
@@ -45,6 +51,7 @@ export default function Header() {
         (document.scrollingElement?.scrollTop ?? 0) > 0;
 
       let parent = headerRef.current?.parentElement ?? null;
+
       while (parent && !scrolled) {
         scrolled = parent.scrollTop > 0;
         parent = parent.parentElement;
@@ -54,11 +61,12 @@ export default function Header() {
     };
 
     handleScroll();
-    // capture를 사용하면 내부 요소의 스크롤도 감지할 수 있습니다.
+
     window.addEventListener("scroll", handleScroll, {
       passive: true,
       capture: true,
     });
+
     window.addEventListener("pageshow", handleScroll);
 
     return () => {
@@ -67,46 +75,64 @@ export default function Header() {
     };
   }, []);
 
-  // 메뉴가 열릴 때: 닫기 버튼으로 포커스 이동 + Esc로 닫기 + Tab 포커스 트랩
+  // 데스크톱 화면으로 전환되면 모바일 메뉴 닫기
+  useEffect(() => {
+    const media = window.matchMedia("(min-width: 1024px)");
+
+    const handleResize = () => {
+      if (media.matches) setMenuOpen(false);
+    };
+
+    media.addEventListener("change", handleResize);
+
+    return () => {
+      media.removeEventListener("change", handleResize);
+    };
+  }, []);
+
+  // 메뉴 포커스 관리 및 Escape로 닫기
   useEffect(() => {
     if (!menuOpen) return;
 
     closeButtonRef.current?.focus();
 
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
         closeMenu();
         return;
       }
 
-      if (e.key !== "Tab" || !menuRef.current) return;
+      if (event.key !== "Tab" || !menuRef.current) return;
 
-      const focusables = menuRef.current.querySelectorAll<HTMLElement>(
-        'a[href], button:not([disabled])'
-      );
+      const focusables =
+        menuRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled])'
+        );
+
       if (focusables.length === 0) return;
 
       const first = focusables[0];
       const last = focusables[focusables.length - 1];
 
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
         last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
+      } else if (
+        !event.shiftKey &&
+        document.activeElement === last
+      ) {
+        event.preventDefault();
         first.focus();
       }
     };
 
     document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [menuOpen]);
 
-  const closeMenu = () => {
-    setMenuOpen(false);
-    toggleButtonRef.current?.focus();
-  };
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [menuOpen, closeMenu]);
 
   return (
     <>
@@ -114,13 +140,21 @@ export default function Header() {
         ref={headerRef}
         className="sticky top-0 z-50 w-full px-4 py-3 transition-[background-color,box-shadow] duration-300 sm:px-6"
         style={{
-          backgroundColor: isScrolled ? "rgba(255, 255, 255, 0.8)" : "transparent",
-          boxShadow: isScrolled ? "0 4px 12px rgba(0, 0, 0, 0.2)" : "none",
+          backgroundColor: isScrolled
+            ? "rgba(255, 255, 255, 0.8)"
+            : "transparent",
+          boxShadow: isScrolled
+            ? "0 4px 12px rgba(0, 0, 0, 0.2)"
+            : "none",
         }}
       >
         <div className="mx-auto flex h-14 max-w-[1440px] items-center justify-between md:h-[62px]">
           {/* 로고 */}
-          <a href="/" className="block shrink-0" aria-label="Dear By Pet 홈">
+          <a
+            href="/"
+            className="block shrink-0"
+            aria-label="Dear By Pet 홈"
+          >
             <img
               src="/images/bi_logo.svg"
               alt="Dear By Pet"
@@ -131,19 +165,22 @@ export default function Header() {
           </a>
 
           {/* 데스크톱 메뉴 */}
-          <nav className="hidden items-center gap-12 lg:flex">
+          <nav
+            aria-label="주 메뉴"
+            className="hidden items-center gap-12 lg:flex"
+          >
             {NAV_ITEMS.map((item) => (
               <a key={item.label} href={item.href}>
                 {item.label}
               </a>
             ))}
 
-            <button
-              type="button"
-              className="cursor-pointer rounded-full bg-[#412826] px-8 py-3 text-white transition-colors duration-200 hover:bg-[#7A5C50]"
+            <a
+              href={EXPERT_APPLY_URL}
+              className="inline-flex cursor-pointer items-center justify-center rounded-full bg-[#412826] px-8 py-3 text-white transition-colors duration-200 hover:bg-[#7A5C50] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8574ac]"
             >
-              전문가 등록
-            </button>
+              전문가 지원하기
+            </a>
           </nav>
 
           {/* 모바일 햄버거 */}
@@ -173,7 +210,7 @@ export default function Header() {
           aria-label="모바일 메뉴"
           className="fixed inset-0 z-[100] flex flex-col overscroll-contain bg-[#412826]/80 backdrop-blur-md lg:hidden"
         >
-          {/* 로고 + 닫기 버튼 */}
+          {/* 로고 + 닫기 */}
           <div className="mx-auto flex h-14 w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 md:h-[62px]">
             <a
               href="/"
@@ -190,7 +227,6 @@ export default function Header() {
               />
             </a>
 
-            {/* 닫기 버튼: 헤더 햄버거 아이콘과 동일한 크기(w-6, 바 두께 2px)로 통일 */}
             <button
               ref={closeButtonRef}
               type="button"
@@ -203,8 +239,11 @@ export default function Header() {
             </button>
           </div>
 
-          {/* 메뉴 */}
-<nav className="font-gowun flex flex-1 flex-col items-center justify-center gap-8 text-white">
+          {/* 모바일 메뉴 링크 */}
+          <nav
+            aria-label="모바일 주 메뉴"
+            className="font-gowun flex flex-1 flex-col items-center justify-center gap-8 text-white"
+          >
             {NAV_ITEMS.map((item) => (
               <a
                 key={item.label}
@@ -217,9 +256,9 @@ export default function Header() {
             ))}
 
             <a
-              href="#"
-              className="mt-4 rounded-full border border-white px-8 py-3"
+              href={EXPERT_APPLY_URL}
               onClick={closeMenu}
+              className="mt-4 rounded-full border border-white px-8 py-3 transition-colors hover:bg-white hover:text-[#412826]"
             >
               전문가 등록
             </a>
