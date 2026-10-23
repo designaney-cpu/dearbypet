@@ -517,7 +517,7 @@ export default function PrivacyPage() {
                 <dl className="space-y-2">
                   <div className="flex gap-3">
                     <dt className="w-16 shrink-0">성명</dt>
-                    <dd>정진우</dd>
+                    <dd>이화신</dd>
                   </div>
                   <div className="flex gap-3">
                     <dt className="w-16 shrink-0">직책</dt>
