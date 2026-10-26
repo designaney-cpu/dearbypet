@@ -63,7 +63,7 @@ export default function Footer() {
             className="h-3 w-px bg-white/30"
           />
 
-          <span>개인정보관리책임자 : 관리자</span>
+          <span>개인정보관리책임자 : 이화신</span>
         </div>
 
         {/* 이메일 */}
@@ -78,7 +78,7 @@ export default function Footer() {
 
         {/* Copyright */}
         <p className="mt-2 text-[12px] leading-5 text-white/60">
-          ©2026 dearbypet. All rights reserved.
+          ©2026 DearBypet. All rights reserved.
         </p>
       </div>
     </footer>
