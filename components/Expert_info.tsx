@@ -72,10 +72,10 @@ const memorialQualifications = [
     icon: "doll",
   },
   {
-    title: "추억 보관 키트 제작",
+    title: "추억 보관 실물 제품 제작",
     description: [
       "사진과 소중한 물건을 오래 간직하도록",
-      "메모리얼 박스와 보관 키트를 제작할 수 있는 분",
+      "메모리얼 박스와 보관 제품을 제작할 수 있는 분",
     ],
     icon: "box",
   },
@@ -318,11 +318,11 @@ export default function PartnerRecruit() {
         </div>
       </div>
 
-      {/* 메모리얼 키트 전문 제작가 */}
+      {/* 메모리얼 전문 제작가 */}
       <div className="px-6">
         <div className="mx-auto flex max-w-[1356px] flex-col gap-5 lg:gap-6">
           <h3 className="font-gowun text-[26px] font-normal leading-[40px] tracking-[-0.5px] lg:text-[32px]">
-            메모리얼 키트 전문 제작가
+            메모리얼 전문 제작가
           </h3>
 
           <ul className="grid gap-5 lg:grid-cols-3 lg:gap-[30px]">
