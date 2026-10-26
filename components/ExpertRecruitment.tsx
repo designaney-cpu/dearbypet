@@ -10,8 +10,7 @@ const MAX_ATTACHMENT_BYTES = 10_000_000; // 10MB
 const fieldClass =
   "h-[56px] w-full min-w-0 rounded-[8px] border border-[#dbdadd] bg-white px-4 text-[18px] leading-[27px] tracking-[-0.5px] text-[#5c4b42] outline-none transition-colors focus:border-[#8574ac] focus:ring-2 focus:ring-[#8574ac]/20";
 
-const labelClass =
-  "block text-[18px] font-normal leading-[27px]";
+const labelClass = "block text-[18px] font-normal leading-[27px]";
 
 export default function ExpertRecruitment() {
   const id = useId();
@@ -121,7 +120,10 @@ export default function ExpertRecruitment() {
 
   return (
     <>
-      <section className="relative w-full bg-white px-6 py-20">
+      <section
+        id="expert-apply"
+        className="relative w-full scroll-mt-[110px] bg-white px-6 py-20"
+      >
         {/* 상단 절반 이미지 배경 */}
         <div
           aria-hidden="true"
@@ -145,10 +147,16 @@ export default function ExpertRecruitment() {
               data-reveal-delay="150"
               className="font-gowun text-[32px] font-normal leading-[45px] text-white"
             >
-              보호자의 마음이 머물 수 있는 시간을
-              <br />
-              함께 만들어주세요.
+              전문가 및 파트너 모집
             </h2>
+
+            <p
+              data-reveal
+              data-reveal-delay="150"
+              className="font-pretendard mt-4 break-keep text-[16px] font-normal leading-[27px] tracking-[-0.5px] text-white lg:text-[18px]"
+            >
+              보호자의 마음이 머물 수 있는 시간을 함께 만들어주세요.
+            </p>
           </div>
 
           {/* 지원 폼 */}
@@ -219,10 +227,7 @@ export default function ExpertRecruitment() {
 
               {/* 단체명 / 성명 */}
               <div className="flex flex-col gap-[4.5px] pt-[3.5px]">
-                <label
-                  htmlFor={`${id}-name`}
-                  className={labelClass}
-                >
+                <label htmlFor={`${id}-name`} className={labelClass}>
                   단체명(성명) *
                 </label>
 
@@ -238,10 +243,7 @@ export default function ExpertRecruitment() {
               {/* 분야 + 휴대폰 */}
               <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="flex min-w-0 flex-col gap-[4.5px] pt-[11.5px]">
-                  <label
-                    htmlFor={`${id}-specialty`}
-                    className={labelClass}
-                  >
+                  <label htmlFor={`${id}-specialty`} className={labelClass}>
                     분야 *
                   </label>
 
@@ -290,10 +292,7 @@ export default function ExpertRecruitment() {
                 </div>
 
                 <div className="flex min-w-0 flex-col gap-[4.5px] pt-[11.5px]">
-                  <label
-                    htmlFor={`${id}-phone`}
-                    className={labelClass}
-                  >
+                  <label htmlFor={`${id}-phone`} className={labelClass}>
                     휴대폰 번호 *
                   </label>
 
@@ -310,10 +309,7 @@ export default function ExpertRecruitment() {
 
               {/* 이메일 */}
               <div className="flex flex-col gap-[4.5px] pt-[3.5px]">
-                <label
-                  htmlFor={`${id}-email`}
-                  className={labelClass}
-                >
+                <label htmlFor={`${id}-email`} className={labelClass}>
                   답변받으실 이메일 주소 *
                 </label>
 
@@ -329,10 +325,7 @@ export default function ExpertRecruitment() {
 
               {/* 파일 */}
               <div className="flex flex-col gap-[4.5px] pt-[3.5px]">
-                <label
-                  htmlFor={`${id}-file`}
-                  className={labelClass}
-                >
+                <label htmlFor={`${id}-file`} className={labelClass}>
                   파일 첨부
                 </label>
 
@@ -394,10 +387,7 @@ export default function ExpertRecruitment() {
 
               {/* 내용 */}
               <div className="flex flex-col gap-[4.5px] pt-[11.5px]">
-                <label
-                  htmlFor={`${id}-message`}
-                  className={labelClass}
-                >
+                <label htmlFor={`${id}-message`} className={labelClass}>
                   내용
                 </label>
 
@@ -408,7 +398,7 @@ export default function ExpertRecruitment() {
                 />
               </div>
 
-              {/* 개인정보 동의 */}
+              {/* 개인정보 동의 체크박스 */}
               <label className="relative flex cursor-pointer items-start gap-3 text-[18px] font-semibold leading-[27px]">
                 <input
                   type="checkbox"
@@ -440,26 +430,85 @@ export default function ExpertRecruitment() {
                 </span>
               </label>
 
-              <ol
+              {/* 개인정보 동의 내용: 고정 높이 스크롤 */}
+              <div
                 id={`${id}-privacy`}
-                className="list-decimal pl-6 text-[16px] leading-[24px]"
+                role="region"
+                aria-labelledby={`${id}-privacy-title`}
+                tabIndex={0}
+                className="h-[120px] w-full overflow-y-auto overscroll-contain rounded-[8px] border border-[#dbdadd] bg-[#faf9f7] p-4 text-[14px] leading-[24px] text-[#5c4b42] [scrollbar-gutter:stable] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8574ac] sm:p-5"
               >
-                <li>
-                  디어바이펫은 전문가 지원 및 사업 제휴 문의 처리를 위해 이름, 전화번호, 이메일 주소를 수집합니다.
-                </li>
+                <div className="space-y-4">
+                  <div>
+                    <h3
+                      id={`${id}-privacy-title`}
+                      className="text-[16px] font-semibold leading-[26px] text-[#412826]"
+                    >
+                      개인정보 수집 및 이용 동의 (필수)
+                    </h3>
 
-                <li>
-                  수집한 개인정보는 이외의 목적으로는 사용하지 않으며,
-                  문의처리 종료시 파기합니다.
-                </li>
-              </ol>
+                    <p className="mt-2">
+                      디어바이펫은 전문가 지원 및 파트너 제휴 신청을 위해
+                      다음과 같이 개인정보를 수집·이용합니다.
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-[#412826]">
+                      1. 수집 및 이용 목적
+                    </h4>
+                    <p className="mt-1">
+                      전문가 지원 및 제휴 신청 접수, 자격·경력 확인, 서류
+                      심사, 인터뷰 진행, 협업 검토 및 결과 안내
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-[#412826]">
+                      2. 수집 항목
+                    </h4>
+                    <p className="mt-1">
+                      성명 또는 담당자명, 단체명(해당 시), 연락처, 이메일
+                      주소, 지원 분야, 신청 내용, 지원자가 제출하는 이력서
+                      및 자격·경력 증빙자료에 포함된 정보
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-[#412826]">
+                      3. 보유 및 이용 기간
+                    </h4>
+                    <p className="mt-1">
+                      지원 절차 또는 제휴 검토 종료 후 1년까지 보유하며,
+                      관계 법령에 따라 보존이 필요한 경우 해당 기간 동안
+                      보관합니다.
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-[#412826]">
+                      4. 동의 거부 권리 및 불이익
+                    </h4>
+                    <p className="mt-1">
+                      개인정보 수집·이용에 동의하지 않을 권리가 있으나,
+                      동의하지 않는 경우 전문가 지원 및 제휴 신청이
+                      제한됩니다.
+                    </p>
+                  </div>
+
+                  <p>
+                    위 내용을 확인하였으며, 개인정보 수집 및 이용에
+                    동의합니다.
+                  </p>
+                </div>
+              </div>
 
               {/* 제출 버튼 */}
               <div className="flex justify-center pt-3">
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="h-[44px] w-[204px] max-w-full cursor-pointer rounded-full bg-[#412826] px-6 text-[14px] leading-[21px] tracking-normal text-white transition-colors duration-200 hover:bg-[#7A5C50] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8574ac] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="h-[44px] w-[212px] max-w-full cursor-pointer rounded-full bg-[#412826] px-6 text-[14px] leading-[21px] tracking-normal text-white transition-colors duration-200 hover:bg-[#7A5C50] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8574ac] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {submitting ? "제출 중..." : "제출하기"}
                 </button>

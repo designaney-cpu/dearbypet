@@ -4,16 +4,14 @@ import { useId, useRef, useState } from "react";
 import type { FormEvent } from "react";
 
 const FORMINIT_URL = "https://forminit.com/f/sx5bc42d1tc";
-
 const MAX_ATTACHMENT_BYTES = 10_000_000; // 10MB
 
 const fieldClass =
   "h-[56px] w-full min-w-0 rounded-[8px] border border-[#dbdadd] bg-white px-4 text-[18px] leading-[27px] tracking-[-0.5px] text-[#5c4b42] outline-none transition-colors focus:border-[#8574ac] focus:ring-2 focus:ring-[#8574ac]/20";
 
-const labelClass =
-  "block text-[18px] font-normal leading-[27px]";
+const labelClass = "block text-[18px] font-normal leading-[27px]";
 
-export default function ExpertRecruitment() {
+export default function PartnerRecruitment() {
   const id = useId();
   const formRef = useRef<HTMLFormElement>(null);
   const submittingRef = useRef(false);
@@ -23,21 +21,20 @@ export default function ExpertRecruitment() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [privacyAgreed, setPrivacyAgreed] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (submittingRef.current) return;
+    if (submittingRef.current || !privacyAgreed) return;
 
     const form = event.currentTarget;
-
     if (!form.reportValidity()) return;
 
     setSubmitError("");
     setSubmitted(false);
 
     const data = new FormData(form);
-
     if (data.get("_gotcha")) return;
 
     const attachment = data.get("fi-file-attachment");
@@ -60,9 +57,7 @@ export default function ExpertRecruitment() {
     try {
       const response = await fetch(FORMINIT_URL, {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-        },
+        headers: { Accept: "application/json" },
         // 파일 전송 시 Content-Type은 브라우저가 지정합니다.
         body: data,
       });
@@ -90,7 +85,6 @@ export default function ExpertRecruitment() {
         throw new Error(`${message} (HTTP ${response.status})`);
       }
 
-      // 실제 접수 응답과 접수 번호를 확인합니다.
       if (
         typeof result.submission?.hashId !== "string" ||
         !result.submission.hashId
@@ -101,7 +95,7 @@ export default function ExpertRecruitment() {
       }
 
       form.reset();
-
+      setPrivacyAgreed(false);
       setFileName("");
       setFileError("");
       setSubmitted(true);
@@ -121,44 +115,58 @@ export default function ExpertRecruitment() {
 
   return (
     <>
-      <section
-        id="expert-apply"
-        className="relative w-full scroll-mt-[110px] bg-white px-6 py-20"
-      >
-        {/* 상단 절반 이미지 배경 */}
+      <section className="relative w-full bg-white px-6 py-20">
+        {/* 상단 절반만 연보라 배경 */}
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 top-0 h-1/2 overflow-hidden"
-        >
-          <img
-            src="/images/expert/expert_01.jpg"
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover"
-          />
+          className="absolute inset-x-0 top-0 h-1/2 bg-[#8574ac]"
+        />
 
-          <div className="absolute inset-0 bg-black/60" />
-        </div>
+        <div className="relative z-10 mx-auto grid max-w-[1356px] items-start gap-12 lg:grid-cols-2">
+          {/* 왼쪽 설명 */}
+          <div className="min-w-0 text-white">
+            <p
+              data-reveal
+              className="mb-2 text-[26px] font-bold uppercase"
+            >
+              Partner Recruitment
+            </p>
 
-        {/* 콘텐츠 */}
-        <div className="relative z-10 mx-auto flex w-full max-w-[1356px] flex-col items-center gap-12">
-          {/* 제목 */}
-          <div className="w-full text-center text-white">
             <h2
               data-reveal
               data-reveal-delay="150"
-              className="font-gowun text-[32px] font-normal leading-[45px] text-white"
+              className="font-gowun text-[32px] font-normal leading-[45px] text-[#ffffff]"
             >
-              보호자의 마음이 머물 수 있는 시간을
+              함께 만들어갈 전문가를
               <br />
-              함께 만들어주세요.
+              찾고 있습니다.
             </h2>
+
+            <p
+              data-reveal
+              data-reveal-delay="300"
+              className="mt-4 text-[18px] leading-[27px]"
+            >
+              경험과 전문성을 바탕으로 보호자의 이별 여정을 세심하게 지원하고,
+              <br />
+              DearByPet과 함께 새로운 이별 케어 서비스를 만들어갈 분을 기다립니다.
+            </p>
+
+            <a
+              href="/expert"
+              data-reveal
+              data-reveal-delay="450"
+              className="mt-6 inline-flex items-center justify-center rounded-full border-2 border-white bg-transparent px-5 py-2 text-[14px] text-white hover:bg-white hover:text-[#412826]"
+            >
+              전문가 모집 자세히 보기
+            </a>
           </div>
 
-          {/* 지원 폼 */}
+          {/* 오른쪽 지원 폼 */}
           <div
             data-reveal
             data-reveal-delay="150"
-            className="font-pretendard w-full max-w-[672px] rounded-[25.3px] bg-white p-6 text-[#5c4b42] shadow-[0_0_10.751px_rgba(0,0,0,0.09)] sm:p-[50px]"
+            className="font-pretendard min-w-0 rounded-[25.3px] bg-white p-6 text-[#5c4b42] shadow-[0_0_10.751px_rgba(0,0,0,0.09)] sm:p-[50px]"
           >
             <form
               ref={formRef}
@@ -222,13 +230,9 @@ export default function ExpertRecruitment() {
 
               {/* 단체명 / 성명 */}
               <div className="flex flex-col gap-[4.5px] pt-[3.5px]">
-                <label
-                  htmlFor={`${id}-name`}
-                  className={labelClass}
-                >
+                <label htmlFor={`${id}-name`} className={labelClass}>
                   단체명(성명) *
                 </label>
-
                 <input
                   id={`${id}-name`}
                   name="fi-sender-fullName"
@@ -241,10 +245,7 @@ export default function ExpertRecruitment() {
               {/* 분야 + 휴대폰 */}
               <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="flex min-w-0 flex-col gap-[4.5px] pt-[11.5px]">
-                  <label
-                    htmlFor={`${id}-specialty`}
-                    className={labelClass}
-                  >
+                  <label htmlFor={`${id}-specialty`} className={labelClass}>
                     분야 *
                   </label>
 
@@ -259,26 +260,17 @@ export default function ExpertRecruitment() {
                       <option value="" disabled>
                         분야 선택
                       </option>
-
-                      <option
-                        value="펫로스 상담"
-                        className="text-[#5c4b42]"
-                      >
+                      <option value="펫로스 상담" className="text-[#5c4b42]">
                         펫로스 상담
                       </option>
-
-                      <option
-                        value="장례 지도"
-                        className="text-[#5c4b42]"
-                      >
+                      <option value="장례 지도" className="text-[#5c4b42]">
                         장례 지도
                       </option>
-
                       <option
-                        value="메모리얼 제작 전문"
+                        value="메모리얼 제작 전문가"
                         className="text-[#5c4b42]"
                       >
-                        메모리얼 제작 전문
+                        메모리얼 제작 전문가
                       </option>
                     </select>
 
@@ -293,13 +285,9 @@ export default function ExpertRecruitment() {
                 </div>
 
                 <div className="flex min-w-0 flex-col gap-[4.5px] pt-[11.5px]">
-                  <label
-                    htmlFor={`${id}-phone`}
-                    className={labelClass}
-                  >
+                  <label htmlFor={`${id}-phone`} className={labelClass}>
                     휴대폰 번호 *
                   </label>
-
                   <input
                     id={`${id}-phone`}
                     name="fi-text-phone"
@@ -313,13 +301,9 @@ export default function ExpertRecruitment() {
 
               {/* 이메일 */}
               <div className="flex flex-col gap-[4.5px] pt-[3.5px]">
-                <label
-                  htmlFor={`${id}-email`}
-                  className={labelClass}
-                >
+                <label htmlFor={`${id}-email`} className={labelClass}>
                   답변받으실 이메일 주소 *
                 </label>
-
                 <input
                   id={`${id}-email`}
                   name="fi-sender-email"
@@ -330,12 +314,9 @@ export default function ExpertRecruitment() {
                 />
               </div>
 
-              {/* 파일 */}
+              {/* 파일 첨부 */}
               <div className="flex flex-col gap-[4.5px] pt-[3.5px]">
-                <label
-                  htmlFor={`${id}-file`}
-                  className={labelClass}
-                >
+                <label htmlFor={`${id}-file`} className={labelClass}>
                   파일 첨부
                 </label>
 
@@ -357,7 +338,6 @@ export default function ExpertRecruitment() {
                           : "";
 
                       input.setCustomValidity(error);
-
                       setFileName(file?.name ?? "");
                       setFileError(error);
                     }}
@@ -397,13 +377,9 @@ export default function ExpertRecruitment() {
 
               {/* 내용 */}
               <div className="flex flex-col gap-[4.5px] pt-[11.5px]">
-                <label
-                  htmlFor={`${id}-message`}
-                  className={labelClass}
-                >
+                <label htmlFor={`${id}-message`} className={labelClass}>
                   내용
                 </label>
-
                 <textarea
                   id={`${id}-message`}
                   name="fi-text-message"
@@ -411,13 +387,17 @@ export default function ExpertRecruitment() {
                 />
               </div>
 
-              {/* 개인정보 동의 */}
+              {/* 개인정보 동의 체크박스 */}
               <label className="relative flex cursor-pointer items-start gap-3 text-[18px] font-semibold leading-[27px]">
                 <input
                   type="checkbox"
                   name="fi-checkbox-privacyConsent"
                   value="agreed"
                   required
+                  checked={privacyAgreed}
+                  onChange={(event) =>
+                    setPrivacyAgreed(event.currentTarget.checked)
+                  }
                   aria-describedby={`${id}-privacy`}
                   className="peer sr-only"
                 />
@@ -443,27 +423,84 @@ export default function ExpertRecruitment() {
                 </span>
               </label>
 
-              <ol
+              {/* 동의 내용: 높이 120px 스크롤 프레임 */}
+              <div
                 id={`${id}-privacy`}
-                className="list-decimal pl-6 text-[16px] leading-[24px]"
+                role="region"
+                aria-labelledby={`${id}-privacy-title`}
+                tabIndex={0}
+                className="h-[120px] w-full overflow-y-auto overscroll-contain rounded-[8px] border border-[#dbdadd] bg-[#faf9f7] p-4 text-[14px] leading-[24px] text-[#5c4b42] [scrollbar-gutter:stable] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8574ac]"
               >
-                <li>
-                  디어바이펫은 전문가 지원 및 사업 제휴 문의 처리를 위해
-                  이름, 전화번호, 이메일 주소를 수집합니다.
-                </li>
+                <div className="space-y-4">
+                  <div>
+                    <h3
+                      id={`${id}-privacy-title`}
+                      className="text-[16px] font-semibold leading-[26px] text-[#412826]"
+                    >
+                      개인정보 수집 및 이용 동의 (필수)
+                    </h3>
+                    <p className="mt-2">
+                      디어바이펫은 전문가 지원 및 파트너 제휴 신청을 위해
+                      다음과 같이 개인정보를 수집·이용합니다.
+                    </p>
+                  </div>
 
-                <li>
-                  수집한 개인정보는 이외의 목적으로는 사용하지 않으며,
-                  문의처리 종료시 파기합니다.
-                </li>
-              </ol>
+                  <div>
+                    <h4 className="font-semibold text-[#412826]">
+                      1. 수집 및 이용 목적
+                    </h4>
+                    <p className="mt-1">
+                      전문가 지원 및 제휴 신청 접수, 자격·경력 확인, 서류
+                      심사, 인터뷰 진행, 협업 검토 및 결과 안내
+                    </p>
+                  </div>
 
-              {/* 제출 버튼 */}
+                  <div>
+                    <h4 className="font-semibold text-[#412826]">
+                      2. 수집 항목
+                    </h4>
+                    <p className="mt-1">
+                      성명 또는 담당자명, 단체명(해당 시), 연락처, 이메일
+                      주소, 지원 분야, 신청 내용, 지원자가 제출하는 이력서
+                      및 자격·경력 증빙자료에 포함된 정보
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-[#412826]">
+                      3. 보유 및 이용 기간
+                    </h4>
+                    <p className="mt-1">
+                      지원 절차 또는 제휴 검토 종료 후 1년까지 보유하며,
+                      관계 법령에 따라 보존이 필요한 경우 해당 기간 동안
+                      보관합니다.
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-[#412826]">
+                      4. 동의 거부 권리 및 불이익
+                    </h4>
+                    <p className="mt-1">
+                      개인정보 수집·이용에 동의하지 않을 권리가 있으나,
+                      동의하지 않는 경우 전문가 지원 및 제휴 신청이
+                      제한됩니다.
+                    </p>
+                  </div>
+
+                  <p>
+                    위 내용을 확인하였으며, 개인정보 수집 및 이용에
+                    동의합니다.
+                  </p>
+                </div>
+              </div>
+
+              {/* 동의한 경우에만 제출 버튼 활성화 */}
               <div className="flex justify-center pt-3">
                 <button
                   type="submit"
-                  disabled={submitting}
-                  className="h-[44px] w-[204px] max-w-full cursor-pointer rounded-full bg-[#412826] px-6 text-[14px] leading-[21px] tracking-normal text-white transition-colors duration-200 hover:bg-[#7A5C50] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8574ac] disabled:cursor-not-allowed disabled:opacity-60"
+                  disabled={!privacyAgreed || submitting}
+                  className="h-[44px] w-[204px] max-w-full cursor-pointer rounded-full bg-[#412826] px-6 text-[14px] leading-[21px] tracking-normal text-white transition-colors duration-200 enabled:hover:bg-[#7A5C50] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8574ac] disabled:cursor-not-allowed disabled:bg-[#dbdadd] disabled:text-[#777777]"
                 >
                   {submitting ? "제출 중..." : "제출하기"}
                 </button>
@@ -488,9 +525,7 @@ export default function ExpertRecruitment() {
           aria-modal="true"
           aria-labelledby="modal-title"
           className="fixed inset-0 z-50 flex items-center justify-center px-6"
-          style={{
-            backgroundColor: "rgba(0,0,0,0.45)",
-          }}
+          style={{ backgroundColor: "rgba(0,0,0,0.45)" }}
           onClick={() => setSubmitted(false)}
         >
           <div

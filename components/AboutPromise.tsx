@@ -66,6 +66,32 @@ export default function AboutPromise() {
           </p>
         </div>
       </div>
+    <section
+  aria-labelledby="service-opening-title"
+  className="w-full bg-[#f4f0ed] px-6 py-12 lg:py-16"
+>
+  <div className="mx-auto max-w-[1356px] text-center text-[#5c4b42]">
+    <h2
+      id="service-opening-title"
+      className="font-gowun text-[26px] font-normal leading-[38px] lg:text-[32px] lg:leading-[45px]"
+    >
+      서비스 오픈 준비 중
+    </h2>
+
+    <div className="font-pretendard mx-auto mt-5 max-w-[960px] space-y-3 break-keep text-[16px] leading-[27px] tracking-[-0.5px] lg:text-[18px] lg:leading-[30px]">
+      <p>
+        DearByPet은 보호자에게 더욱 따뜻하고 신뢰할 수 있는 서비스를
+        제공하기 위해 전문 상담사 및 파트너와 함께 정식 오픈을 준비하고
+        있습니다.
+      </p>
+
+      <p>
+        현재 상담 예약과 결제, 장례 및 메모리얼 서비스 신청은 운영되지
+        않으며, 서비스별 이용 방법은 정식 오픈 시 안내해 드릴 예정입니다.
+      </p>
+    </div>
+  </div>
+</section>
     </section>
   );
 }

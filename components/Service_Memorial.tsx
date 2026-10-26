@@ -13,7 +13,7 @@ export default function Advice() {
               Memorial - 기억하기
             </p>
             <p className="text-[32px] leading-normal sm:text-[42px]">
-              메모리얼 키트 제작 & 드림
+              메모리얼 제작 전문가 연결
             </p>
           </div>
 
@@ -45,7 +45,7 @@ export default function Advice() {
             >
               함께했던 시간은 기억속에.
               <br />
-              Dearbypet의 메모리얼 키트
+              Dearbypet의 메모리얼
             </h2>
             <p className="font-pretendard mt-4 text-[16px] leading-[27px] lg:text-[18px]">
               소중한 추억을 기록하고 남기며, 오래도록 곁에 간직할 수 있는 메모리얼 서비스를 준비합니다.
